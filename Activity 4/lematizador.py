@@ -16,7 +16,7 @@ def main():
                     i = i.replace(p, '')
                     i = i.replace('"', "")    
             word = stemmer_en.stemWord(i)
-            w.write(f"{word} ")
+            w.write(f"{word.lower()} ")
 
 
 
