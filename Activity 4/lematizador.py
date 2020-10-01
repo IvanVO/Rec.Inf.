@@ -1,4 +1,5 @@
 import Stemmer
+import DoubleStemmer as ds
 
 stemmer_en = Stemmer.Stemmer('english')
 punctuation_marks = [".", ":", ";", ",", "?", '"', "'", "(", ")", "!", "-"]
@@ -22,8 +23,8 @@ def stemm(f, w):
             w.write(f"{word.lower()} ")
 
 def main():
-    f = open("/home/ivanvillanueva/Desktop/Stemmeing/Activity 4/Liquid Water on Mars.txt", "r")
-    w = open("/home/ivanvillanueva/Desktop/Stemmeing/Activity 4/testLematizador.txt", "w")
+    f = open("Liquid Water on Mars.txt", "r")
+    w = open("Lematizador_output.txt", "w")
 
     stemm(f, w)
 
