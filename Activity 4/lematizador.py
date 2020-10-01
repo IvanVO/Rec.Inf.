@@ -14,10 +14,7 @@ def main():
             for p in punctuation_marks:
                 if i.find(p):
                     i = i.replace(p, '')
-                elif i[0] == '"' or i[-1] == '"':
-                    i.replace('"', "")
-
-                    print(i)
+                    i = i.replace('"', "")    
             word = stemmer_en.stemWord(i)
             w.write(f"{word} ")
 
