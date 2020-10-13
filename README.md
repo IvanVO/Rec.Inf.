@@ -1,5 +1,5 @@
 # Stemmeing
-Information Retrieval (Activity 4)
+Information Retrieval Activities
 
 # Installation
 pip install pystemmer
