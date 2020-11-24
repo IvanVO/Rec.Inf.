@@ -1,5 +1,2 @@
-# Stemmeing
-Information Retrieval Activities
-
-# Installation
-pip install pystemmer
+# Rec.Inf.
+Proyecto Final
