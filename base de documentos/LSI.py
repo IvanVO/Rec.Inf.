@@ -1,5 +1,26 @@
 import os.path
 
+def storeToCSV(filename, list_of_dictionaries, index):
+
+    directory = "./CSVFiles/"
+    # Create the name of the file
+    csv_file_name = f"{filename[:-4]} & TERM FREC.txt"
+    
+    # Save the files name in the directory
+    file_path = os.path.join(directory, csv_file_name)
+
+    # If file directory does not exists create it
+    if not os.path.isdir(directory):
+        os.mkdir(directory)
+
+    file = open(file_path, 'w')
+
+    # write in the file the key and its value in the file
+    for key, value in list_of_dictionaries[index].items():
+        file.write(f"{key},{value}\n")
+    
+    file.close()
+
 def count_terms(file):
     content = open(f"./LematizedFiles/{file}", 'r')
     dictionary = dict()
@@ -10,7 +31,7 @@ def count_terms(file):
     for line in content:
         # Remove the leading spaces and newline character
         line = line.strip()
-    
+
         # Convert the characters in line to lowercase to avoid case mismatch
         line = line.lower()
 
@@ -31,20 +52,17 @@ def count_terms(file):
 
 def list_files():
     directory = './LematizedFiles/'
+    csv_directory = './CSVFiles/'
+    
     list_files = os.listdir(directory)
     list_of_dictionaries = []
     count = 0
+
     for file in list_files:
         if file.endswith(".txt"):
             list_of_dictionaries.append(count_terms(file))
-            # print(len(count_terms(file)))
-    for dictionary in list_of_dictionaries:
-        print(dictionary)
-        # for key in dictionary:
-        #     print(key)
-        #     count += 1
-        
-    # print(len(list_of_dictionaries))
+        storeToCSV(file, list_of_dictionaries, count)
+        count += 1
 
 def main():
     list_files()

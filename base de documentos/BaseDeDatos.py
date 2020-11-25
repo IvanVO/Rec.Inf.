@@ -53,7 +53,7 @@ class BaseDeDatos:
         connection = mysql.connector.connect(**credentials)
 
         cursor = connection.cursor()
-        read_binary_file = "SELECT * from documentos where id = %s"
+        read_binary_file = "SELECT * FROM documentos WHERE id = %s"
 
         cursor.execute(read_binary_file, (doc_id,))
         record = cursor.fetchall()

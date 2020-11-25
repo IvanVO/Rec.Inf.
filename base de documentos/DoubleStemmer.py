@@ -114,7 +114,7 @@ class DoubleStemmer:
         for i in range(index, len(name)-4):
             output += str(name[i])
         
-        output += " LEMMATIZED.txt"
+        output += " LEM.txt"
         
         file_path = os.path.join(directory, output)
 
