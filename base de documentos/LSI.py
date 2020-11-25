@@ -1,71 +1,76 @@
+import BaseDeDatos as db
 import os.path
 
-def storeToCSV(filename, list_of_dictionaries, index):
+class LSI:
+    def __init__(self, database):
+        self.database = BaseDeDatos()
 
-    directory = "./CSVFiles/"
-    # Create the name of the file
-    csv_file_name = f"{filename[:-4]} & TERM FREC.txt"
-    
-    # Save the files name in the directory
-    file_path = os.path.join(directory, csv_file_name)
+    def storeToCSV(self, filename, list_of_dictionaries, index):
 
-    # If file directory does not exists create it
-    if not os.path.isdir(directory):
-        os.mkdir(directory)
+        documents_content = ""
+        directory = "./CSVFiles/"
+        # Create the name of the file
+        csv_file_name = f"{filename[:-4]} & TERM FREC.txt"
+        
+        # Save the files name in the directory
+        file_path = os.path.join(directory, csv_file_name)
 
-    file = open(file_path, 'w')
+        # If file directory does not exists create it
+        if not os.path.isdir(directory):
+            os.mkdir(directory)
 
-    # write in the file the key and its value in the file
-    for key, value in list_of_dictionaries[index].items():
-        file.write(f"{key},{value}\n")
-    
-    file.close()
+        file = open(file_path, 'w')
 
-def count_terms(file):
-    content = open(f"./LematizedFiles/{file}", 'r')
-    dictionary = dict()
+        # write in the file the key and its value in the file
+        for key, value in list_of_dictionaries[index].items():
+            documents_content += f"{key},{value}\n"
 
-    # List of the terms
-    term_list = []
+            file.write(f"{key},{value}\n")
 
-    for line in content:
-        # Remove the leading spaces and newline character
-        line = line.strip()
+        file.close()
 
-        # Convert the characters in line to lowercase to avoid case mismatch
-        line = line.lower()
+        return documents_content
 
-        # Split the line into words
-        words = line.split(" ")
 
-        # Iterate over each word in line
-        for word in words:
-            # Check if the word is already in dictionary
-            if word in dictionary:
-                # Increment count of word by 1
-                dictionary[word] = dictionary[word] + 1
-            else:
-                # Add the word to dictionary with count 1
-                dictionary[word] = 1
-    
-    return dictionary
+    def count_terms(self, file):
+        content = open(f"./LematizedFiles/{file}", 'r')
+        dictionary = dict()
 
-def list_files():
-    directory = './LematizedFiles/'
-    csv_directory = './CSVFiles/'
-    
-    list_files = os.listdir(directory)
-    list_of_dictionaries = []
-    count = 0
+        # List of the terms
+        term_list = []
 
-    for file in list_files:
-        if file.endswith(".txt"):
-            list_of_dictionaries.append(count_terms(file))
-        storeToCSV(file, list_of_dictionaries, count)
-        count += 1
+        for line in content:
+            # Remove the leading spaces and newline character
+            line = line.strip()
 
-def main():
-    list_files()
-      
-if __name__ == '__main__':
-    main()
+            # Convert the characters in line to lowercase to avoid case mismatch
+            line = line.lower()
+
+            # Split the line into words
+            words = line.split(" ")
+
+            # Iterate over each word in line
+            for word in words:
+                # Check if the word is already in dictionary
+                if word in dictionary:
+                    # Increment count of word by 1
+                    dictionary[word] = dictionary[word] + 1
+                else:
+                    # Add the word to dictionary with count 1
+                    dictionary[word] = 1
+        
+        return dictionary
+
+    def list_files(self):
+        directory = './LematizedFiles/'
+        csv_directory = './CSVFiles/'
+        
+        list_files = os.listdir(directory)
+        list_of_dictionaries = []
+        count = 0
+
+        for file in list_files:
+            if file.endswith(".txt"):
+                list_of_dictionaries.append(count_terms(file))
+            storeToCSV(file, list_of_dictionaries, count)
+            count += 1

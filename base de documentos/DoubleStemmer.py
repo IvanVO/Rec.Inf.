@@ -1,5 +1,4 @@
 import os.path
-# import BaseDeDatos as db
 import Stemmer
 
 class DoubleStemmer:
@@ -63,7 +62,6 @@ class DoubleStemmer:
                     return None
 
     def stemText(self, text):
-        # database = db.BaseDeDatos()
         output = self.getOutputName(text)
 
         # ------------------------------ Remove punctuation marks in text
@@ -98,8 +96,6 @@ class DoubleStemmer:
                 if word != None:
                     w.write(f"{word.lower()} ")
 
-        # database.insert_blob(output)
-        # database.readBLOB(1, output)
         f.close()
         w.close()
 

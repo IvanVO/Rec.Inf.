@@ -14,29 +14,25 @@ class BaseDeDatos:
     def __init__(self):
         pass
 
-    def read_file(self, filename):
-        with open(filename, 'rb') as f:
-            file = f.read()
-
-        return file
-
-    def insert_blob(self, filename):
+    def insertContent(self, documents_content):
+        
         connection = mysql.connector.connect(**credentials)
         cursor = connection.cursor()
-        print("Inserting BLOB into documentos table")
+        print("Inserting document's content to the database")
+
         try:
             cursor = connection.cursor()
             query = "INSERT INTO documentos (doc) VALUES (%s)"
-            file = self.read_file(filename)
-
-            # Convert data into tuple format
-            insert_blob_tuple = (file,)
-            result = cursor.execute(query, insert_blob_tuple)
+            
+            # Insert data to table
+            insert_content = (documents_content,)
+            result = cursor.execute(query, insert_content)
             connection.commit()
-            print("file inserted successfully as a BLOB into documentos table", result)
+            
+            print("documents content inserted successfully as a text into documentos table", result)
 
         except mysql.connector.Error as error:
-            print("Failed inserting BLOB data into MySQL table {}".format(error))
+            print("Failed inserting document's content data to table documentos {}".format(error))
 
         finally:
             if (connection.is_connected()):
@@ -44,33 +40,4 @@ class BaseDeDatos:
                 connection.close()
                 print("MySQL connection is closed")
 
-    def write_file(self, data, filename):
-        with open(filename, 'wb') as f:
-            f.write(data)
-
-    def read_blob(self, doc_id):
-        try:
-        connection = mysql.connector.connect(**credentials)
-
-        cursor = connection.cursor()
-        read_binary_file = "SELECT * FROM documentos WHERE id = %s"
-
-        cursor.execute(read_binary_file, (doc_id,))
-        record = cursor.fetchall()
-        for row in record:
-            print("Id = ", row[0], )
-            print("Content: \n\n", row[1])
-            image = row[2]
-            file = row[3]
-            print("Storing content on disk \n")
-            self.write_file()
-            write_file(file, bioData)
-
-    except mysql.connector.Error as error:
-        print("Failed to read BLOB data from MySQL table {}".format(error))
-
-    finally:
-        if (connection.is_connected()):
-            cursor.close()
-            connection.close()
-            print("MySQL connection is closed")
+   
