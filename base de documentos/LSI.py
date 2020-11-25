@@ -2,13 +2,15 @@ import BaseDeDatos as db
 import os.path
 
 class LSI:
-    def __init__(self, database):
-        self.database = BaseDeDatos()
+    def __init__(self):
+        pass
 
     def storeToCSV(self, filename, list_of_dictionaries, index):
+        database = db.BaseDeDatos()
 
         documents_content = ""
         directory = "./CSVFiles/"
+
         # Create the name of the file
         csv_file_name = f"{filename[:-4]} & TERM FREC.txt"
         
@@ -23,9 +25,11 @@ class LSI:
 
         # write in the file the key and its value in the file
         for key, value in list_of_dictionaries[index].items():
+            # For the database
             documents_content += f"{key},{value}\n"
-
+            # For the file
             file.write(f"{key},{value}\n")
+        database.insertContent(documents_content)
 
         file.close()
 
@@ -61,7 +65,7 @@ class LSI:
         
         return dictionary
 
-    def list_files(self):
+    def listFiles(self):
         directory = './LematizedFiles/'
         csv_directory = './CSVFiles/'
         
@@ -71,6 +75,8 @@ class LSI:
 
         for file in list_files:
             if file.endswith(".txt"):
-                list_of_dictionaries.append(count_terms(file))
-            storeToCSV(file, list_of_dictionaries, count)
+                list_of_dictionaries.append(self.count_terms(file))
+            store_dictionaries = self.storeToCSV(file, list_of_dictionaries, count)
             count += 1
+
+        return store_dictionaries

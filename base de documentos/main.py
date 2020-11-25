@@ -5,7 +5,8 @@ import LSI as lsi
 def main():
 
     stemmer = ds.DoubleStemmer()
-    
+    lsi_ = lsi.LSI()
+
     directory = './TestFiles/'
     list_files = os.listdir(directory)
     
@@ -13,7 +14,7 @@ def main():
         if file.endswith(".txt"):    
             stemmer.stemText(f"TestFiles/{file}")
 
-    lsi.list_files()
+    lsi_.listFiles()
 
 if __name__ == '__main__':
     main()
