@@ -1,3 +1,5 @@
+import os.path
+# import BaseDeDatos as db
 import Stemmer
 
 class DoubleStemmer:
@@ -61,10 +63,11 @@ class DoubleStemmer:
                     return None
 
     def stemText(self, text):
+        # database = db.BaseDeDatos()
         output = self.getOutputName(text)
 
         # ------------------------------ Remove punctuation marks in text
-        punctuation_marks = [".", ":", ";", ",", "?", '"', "'", "(", ")", "!", "-"]
+        punctuation_marks = [".", ":", ";", ",", "?", '"', "'", "(", ")", "!", "-", "[", "]", "’"]
 
         f = open(text, "r")
         w = open(output, "w")
@@ -83,6 +86,8 @@ class DoubleStemmer:
                     if i.find(p):
                         i = i.replace(p, '')
                         i = i.replace('"', "")
+                        i = i.replace("[", "")
+                        i = i.replace("(", "")
 
                 for sw in self.stopList:
                     if i == sw:
@@ -92,18 +97,28 @@ class DoubleStemmer:
 
                 if word != None:
                     w.write(f"{word.lower()} ")
+
+        # database.insert_blob(output)
+        # database.readBLOB(1, output)
         f.close()
         w.close()
 
     def getOutputName(self, text):
+        directory = "./LematizedFiles/"
+
         name = str(text)
         index = name.find('/')
         index += 1
         output = ""
-
+        
         for i in range(index, len(name)-4):
             output += str(name[i])
-
+        
         output += " LEMMATIZED.txt"
+        
+        file_path = os.path.join(directory, output)
 
-        return output
+        if not os.path.isdir(directory):
+            os.mkdir(directory)
+
+        return file_path
