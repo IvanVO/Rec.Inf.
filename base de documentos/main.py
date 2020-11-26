@@ -15,6 +15,7 @@ def main():
             stemmer.stemText(f"TestFiles/{file}")
 
     lsi_.listFiles()
+    lsi_.retrieveData()
 
 if __name__ == '__main__':
     main()

@@ -5,10 +5,10 @@ class LSI:
     def __init__(self):
         pass
 
-    def storeToCSV(self, filename, list_of_dictionaries, index):
+    def storeToDb(self, filename, list_of_dictionaries, index):
         database = db.BaseDeDatos()
 
-        documents_content = ""
+        '''documents_content = ""
         directory = "./CSVFiles/"
 
         # Create the name of the file
@@ -21,20 +21,23 @@ class LSI:
         if not os.path.isdir(directory):
             os.mkdir(directory)
 
-        file = open(file_path, 'w')
+        file = open(file_path, 'w')'''
 
+        db_tables_list = []
+        # Create database tables
+        db_table_name = database.createTable(filename)
+
+        # Creating a list of the db tables names.
+        db_tables_list.append(db_table_name)
         # write in the file the key and its value in the file
         for key, value in list_of_dictionaries[index].items():
             # For the database
-            documents_content += f"{key},{value}\n"
-            # For the file
-            file.write(f"{key},{value}\n")
-        database.insertContent(documents_content)
+            database.insertTermsFreq(db_table_name, key, value)
+            '''# For the file
+            #file.write(f"{key},{value}\n")
 
-        file.close()
-
-        return documents_content
-
+        #file.close()'''
+        
 
     def count_terms(self, file):
         content = open(f"./LematizedFiles/{file}", 'r')
@@ -65,7 +68,9 @@ class LSI:
         
         return dictionary
 
+
     def listFiles(self):
+
         directory = './LematizedFiles/'
         csv_directory = './CSVFiles/'
         
@@ -76,7 +81,13 @@ class LSI:
         for file in list_files:
             if file.endswith(".txt"):
                 list_of_dictionaries.append(self.count_terms(file))
-            store_dictionaries = self.storeToCSV(file, list_of_dictionaries, count)
+            store_dictionaries = self.storeToDb(file, list_of_dictionaries, count)
             count += 1
 
         return store_dictionaries
+
+
+    def retrieveData(self):
+        database = db.BaseDeDatos()
+        database.retreiveFromDatabase("Covid")
+
