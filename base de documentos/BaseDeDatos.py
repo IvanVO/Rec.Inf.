@@ -15,6 +15,24 @@ class BaseDeDatos:
     def __init__(self):
         pass
 
+    
+    def dropCreate(self):
+        try:
+            connection = mysql.connector.connect(**credentials)
+            cursor = connection.cursor()
+            
+            cursor.execute("DROP DATABASE baseDocumentos")
+            print("Database dropped")
+            cursor.execute("CREATE DATABASE baseDocumentos")
+            print("Database created")
+
+        except mysql.connector.Error as error:
+            print(error)
+        
+        finally:
+            if (connection.is_connected()):
+                cursor.close()
+                connection.close()
 
     def createTable(self, filename):
         
@@ -29,7 +47,7 @@ class BaseDeDatos:
         try:
             connection = mysql.connector.connect(**credentials)
             cursor = connection.cursor()
-            
+
             create_table = f"CREATE TABLE IF NOT EXISTS {table_name} (id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, term VARCHAR(50) NOT NULL, frequency INT(15) NOT NULL)"
 
             cursor.execute(create_table)
@@ -66,18 +84,20 @@ class BaseDeDatos:
                 connection.close()
         
 
-    def retreiveFromDatabase(self, table_name):
-        try:            
+    def retreiveFromDatabase(self, tables):
+        try:
             connection = mysql.connector.connect(**credentials)
             cursor = connection.cursor()
 
-            query = f"SELECT term, frequency FROM {table_name}"
-            cursor.execute(query)
+            tuple_list = []
 
-            records = cursor.fetchall()
-            
-            for record in records:
-                print(type(record))
+            for table in tables:
+                query = f"SELECT term, frequency FROM {table}"
+                cursor.execute(query)
+                records = cursor.fetchall()
+
+                for record in records:
+                    tuple_list.append(record)
 
         except mysql.connector.Error as error:
             print(error)
