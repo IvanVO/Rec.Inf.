@@ -5,8 +5,8 @@ from mysql.connector import Error, MySQLConnection
  
 credentials = {
     'host':"localhost",
-    'user':'ivan',
-    'password':'@Vioa_1999',
+    'user':'your_username',
+    'password':'your_password',
     'database':'baseDocumentos'
 }
 
